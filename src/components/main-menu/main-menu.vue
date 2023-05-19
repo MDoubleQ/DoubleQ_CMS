@@ -2,7 +2,7 @@
   <div class="main-menu">
     <div class="logo">
       <img src="@/assets/img/logo.svg" alt="" />
-      <h2>Double_Q管理</h2>
+      <h2 v-show="!isFold">Double_Q管理</h2>
     </div>
     <div class="menu">
       <el-menu
@@ -10,6 +10,7 @@
         text-color="#b7bdc3"
         active-text-color="#fff"
         background-color="#001529"
+        :collapse="isFold"
       >
         <!-- 动态遍历菜单选项 -->
         <template v-for="item in userMenu" :key="item.id">
@@ -27,7 +28,6 @@
             </template>
           </el-sub-menu>
         </template>
-
         <!-- <el-sub-menu index="1">
           <template #title>
             <el-icon><Monitor /></el-icon>
@@ -70,9 +70,16 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+
+defineProps({
+  isFold: {
+    type: Boolean,
+    default: true
+  }
+})
+
 const useLoginStore = useStore()
 const userMenu = computed(() => useLoginStore.state.login.userMenu)
-console.log(userMenu)
 </script>
 
 <style lang="less" scoped>
@@ -91,7 +98,6 @@ console.log(userMenu)
       margin-right: 10px;
     }
   }
-
   .menu {
     .el-menu {
       border-right: none;
