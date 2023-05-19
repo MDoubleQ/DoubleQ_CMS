@@ -28,7 +28,7 @@ const router = createRouter({
 // 举个栗子: / => /main
 // to: /main from: / 返回值: /abc
 router.beforeEach((to) => {
-  const token = localStorage.getItem('token')
+  const token = localCache.getCache('login-token')
   // if (to.path === '/main') {
   //   // 只有登陆成功（token），才能真正进入到main页面
   //   if (!token) return '/login'

@@ -12,7 +12,7 @@
         <el-input v-model="account.name"></el-input>
       </el-form-item>
       <el-form-item label-position="left" label="密码" prop="password">
-        <el-input v-model="account.password"></el-input>
+        <el-input type="password" v-model="account.password"></el-input>
       </el-form-item>
     </el-form>
   </div>
@@ -22,10 +22,11 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex'
+import { localCache } from '@/utils/cache'
 
 const account = reactive({
-  name: '',
-  password: ''
+  name: localCache.getCache('name') ?? '',
+  password: localCache.getCache('password') ?? ''
 })
 
 // 定义校验规则
@@ -48,7 +49,7 @@ const useLoginStore = useStore()
 
 // 执行账号的登录逻辑
 const formRef = ref()
-function loginAction() {
+function loginAction(isRemberPassword) {
   formRef.value.validate((valid) => {
     if (valid) {
       ElMessage({
@@ -61,7 +62,19 @@ function loginAction() {
 
       // console.log(name, password)
       //  向服务器发送网络请求（携带账号和密码）
-      useLoginStore.dispatch('login/fetchAccountLogin', { name, password })
+      useLoginStore
+        .dispatch('login/fetchAccountLogin', { name, password })
+        .then(() => {
+          // 判断是否需要记住密码
+          if (isRemberPassword) {
+            localCache.setCache('name', name)
+            localCache.setCache('password', password)
+          } else {
+            // 如果不需要记住密码，则删除localStorage储存密码
+            localCache.removeCache('name')
+            localCache.removeCache('password')
+          }
+        })
     } else {
       ElMessage.error('请输入正确的格式后再操作')
     }

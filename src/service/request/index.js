@@ -30,6 +30,13 @@ class HYRequest {
   post(config) {
     return this.request({ ...config, method: 'post' })
   }
+
+  delete(config) {
+    return this.request({ ...config, method: 'delete' })
+  }
+  patch(config) {
+    return this.request({ ...config, method: 'patch' })
+  }
 }
 
 export default new HYRequest(BASE_URL, TIMEOUT)

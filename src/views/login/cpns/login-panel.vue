@@ -39,17 +39,25 @@
 </template>
 
 <script setup>
+import { localCache } from '@/utils/cache'
 import PanelAccount from './panel-account.vue'
 import PanelPhone from './panel-phone.vue'
-import { ref } from 'vue'
-const isRemberPassword = ref(false)
+import { ref, watch } from 'vue'
+const isRemberPassword = ref(localCache.getCache('isRemberPassword') ?? false)
 const activeName = ref('account')
 
+// 侦听是否记住密码，对checkbox进行勾选
+watch(isRemberPassword, (newValue) => {
+  console.log(newValue)
+  localCache.setCache('isRemberPassword', newValue)
+})
+
 const accountRef = ref()
+
 function loginBtnClick() {
   if (activeName.value === 'account') {
     // 1. 获取子组件的实例
-    accountRef.value?.loginAction()
+    accountRef.value?.loginAction(isRemberPassword.value)
     // 2. 调用方法
 
     // console.log('用户进行账号登陆')
