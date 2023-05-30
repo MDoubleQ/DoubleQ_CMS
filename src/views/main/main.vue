@@ -8,7 +8,9 @@
         <el-header height="50px">
           <main-header @fold-change="handleFoldChange"></main-header>
         </el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -19,15 +21,6 @@ import mainMenu from '@/components/main-menu/main-menu.vue'
 import mainHeader from '@/components/main-header/main-header.vue'
 
 import { ref } from 'vue'
-// import router from '@/router'
-// import { localCache } from '@/utils/cache'
-// function handleExitClick() {
-//   // 删除token
-//   localCache.removeCache('login-token')
-
-//   // 跳转到登陆页面
-//   router.push('/login')
-// }
 
 // 处理 Main-header 中的折叠变化
 const isFold = ref(false)
@@ -47,9 +40,11 @@ function handleFoldChange(flag) {
       &::-webkit-scrollbar {
         display: none;
       }
+
+      transition: width 0.3s ease;
     }
     .el-main {
-      background-color: #ffd1d1;
+      background-color: #f0f2f5;
     }
   }
 }

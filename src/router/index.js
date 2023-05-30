@@ -13,7 +13,52 @@ const router = createRouter({
     },
     {
       path: '/main',
+      name: 'main',
       component: () => import('@/views/main/main.vue')
+      // children: [
+      //   {
+      //     path: '/main/analysis/overview',
+      //     component: () => import('@/views/main/analysis/overview/overview.vue')
+      //   },
+      //   {
+      //     path: '/main/analysis/dashboard',
+      //     component: () =>
+      //       import('@/views/main/analysis/dashboard/dashboard.vue')
+      //   },
+      //   {
+      //     path: '/main/product/category',
+      //     component: () => import('@/views/main/product/category/category.vue')
+      //   },
+      //   {
+      //     path: '/main/product/goods',
+      //     component: () => import('@/views/main/product/goods/goods.vue')
+      //   },
+      //   {
+      //     path: '/main/story/chat',
+      //     component: () => import('@/views/main/story/chat/chat.vue')
+      //   },
+      //   {
+      //     path: '/main/story/list',
+      //     component: () => import('@/views/main/story/list/list.vue')
+      //   },
+      //   {
+      //     path: '/main/system/user',
+      //     component: () => import('@/views/main/system/user/user.vue')
+      //   },
+      //   {
+      //     path: '/main/system/role',
+      //     component: () => import('@/views/main/system/role/role.vue')
+      //   },
+      //   {
+      //     path: '/main/system/menu',
+      //     component: () => import('@/views/main/system/menu/menu.vue')
+      //   },
+      //   {
+      //     path: '/main/system/department',
+      //     component: () =>
+      //       import('@/views/main/system/department/department.vue')
+      //   }
+      // ]
     },
     {
       path: '/:pathMath(.*)',
@@ -21,6 +66,56 @@ const router = createRouter({
     }
   ]
 })
+
+// 动态路由，也可以放在每个单独的文件夹中
+// const localRouter = [
+//   {
+//     path: '/main/analysis/overview',
+//     component: () => import('@/views/main/analysis/overview/overview.vue')
+//   },
+//   {
+//     path: '/main/analysis/dashboard',
+//     component: () => import('@/views/main/analysis/dashboard/dashboard.vue')
+//   },
+//   {
+//     path: '/main/product/category',
+//     component: () => import('@/views/main/product/category/category.vue')
+//   },
+//   {
+//     path: '/main/product/goods',
+//     component: () => import('@/views/main/product/goods/goods.vue')
+//   },
+//   {
+//     path: '/main/story/chat',
+//     component: () => import('@/views/main/story/chat/chat.vue')
+//   },
+//   {
+//     path: '/main/story/list',
+//     component: () => import('@/views/main/story/list/list.vue')
+//   },
+//   {
+//     path: '/main/system/user',
+//     component: () => import('@/views/main/system/user/user.vue')
+//   },
+//   {
+//     path: '/main/system/role',
+//     component: () => import('@/views/main/system/role/role.vue')
+//   },
+//   {
+//     path: '/main/system/menu',
+//     component: () => import('@/views/main/system/menu/menu.vue')
+//   },
+//   {
+//     path: '/main/system/department',
+//     component: () => import('@/views/main/system/department/department.vue')
+//   }
+// ]
+
+// 动态添加路由，但是并没有根据服务器获取的数据进行动态路由的匹配
+// localRouter.forEach((route) => {
+//   router.addRoute('main', route)
+//   // console.log(route)
+// })
 
 // 导航守卫
 // 参数: to(跳转到的位置)/from(从哪里跳转过来)
@@ -33,9 +128,8 @@ router.beforeEach((to) => {
   //   // 只有登陆成功（token），才能真正进入到main页面
   //   if (!token) return '/login'
   // }
-
   // 优化代码
-  if (to.path === '/main' && !token) {
+  if (to.path.startsWith('/main') && !token) {
     return '/login'
   }
 })

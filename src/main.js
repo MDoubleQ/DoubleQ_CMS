@@ -10,6 +10,7 @@ import '@/assets/CSS/index.less'
 // element-plus引入
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 // icon引入
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -21,5 +22,11 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 // app注册
 app.use(router)
 app.use(store)
-app.use(ElementPlus)
+
+app.use(ElementPlus, {
+  locale: zhCn
+})
 app.mount('#app')
+store.dispatch('login/localCacheAction').then(() => {
+  console.log(store.state.login.userMenu)
+})

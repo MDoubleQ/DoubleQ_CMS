@@ -4,8 +4,12 @@ import {
   getUserMenuByRoleId
 } from '@/service/index'
 
+// 导入路由配置
+import localRouter from './locakRouter'
+
 import router from '@/router'
 import { localCache } from '@/utils/cache'
+
 export default {
   namespaced: true,
   state: () => ({
@@ -26,6 +30,11 @@ export default {
     },
     setUserMenuResult(state, data) {
       state.userMenu = data
+    },
+    setLocalCache(state, data) {
+      state.token = data.token
+      state.userInfo = data.userInfo
+      state.userMenu = data.userMenu
     }
   },
   actions: {
@@ -56,8 +65,49 @@ export default {
       // 浏览器本地缓存用户的权限（菜单Menu）
       localCache.setCache('userMenu', userMenuResult.data)
 
+      console.log(userMenuResult.data)
+      console.log(localRouter)
+
+      // 根据userMenu数据进行动态路由配置
+      for (const menu of userMenuResult.data) {
+        console.log(menu)
+        for (const submenu of menu.children) {
+          console.log(submenu)
+          const route = localRouter.find((item) => item.path === submenu.url)
+          if (route) {
+            router.addRoute('main', route)
+          }
+        }
+      }
+
       // 页面跳转
       router.push('/main')
+    },
+    // 用户进行刷新后，默认加载数据
+    localCacheAction(context) {
+      const token = localCache.getCache('login-token')
+      const userInfo = localCache.getCache('userInfo')
+      const userMenu = localCache.getCache('userMenu')
+      const localCacheMessage = {
+        token,
+        userInfo,
+        userMenu
+      }
+
+      if (token && userInfo && userMenu) {
+        context.commit('setLocalCache', localCacheMessage)
+        // 根据userMenu数据进行动态路由配置
+        for (const menu of localCacheMessage.userMenu) {
+          console.log(menu)
+          for (const submenu of menu.children) {
+            console.log(submenu)
+            const route = localRouter.find((item) => item.path === submenu.url)
+            if (route) {
+              router.addRoute('main', route)
+            }
+          }
+        }
+      }
     }
   }
 }

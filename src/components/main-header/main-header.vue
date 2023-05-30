@@ -6,13 +6,19 @@
       </el-icon>
     </div>
     <div class="content">
-      <div class="breadcrumb">面包屑</div>
-      <div class="info">个人信息</div>
+      <div class="breadcrumb">
+        <!-- <header-bread-crumb></header-bread-crumb> -->
+      </div>
+      <div class="info">
+        <header-info></header-info>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import headerInfo from './cpns/header-info.vue'
+// import headerBreadCrumb from './cpns/header-bread-crumb.vue'
 import { ref } from 'vue'
 
 // 记录状态

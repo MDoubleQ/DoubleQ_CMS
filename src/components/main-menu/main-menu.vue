@@ -2,7 +2,7 @@
   <div class="main-menu">
     <div class="logo">
       <img src="@/assets/img/logo.svg" alt="" />
-      <h2 v-show="!isFold">Double_Q管理</h2>
+      <h2 v-show="!isFold" class="title">Double_Q管理</h2>
     </div>
     <div class="menu">
       <el-menu
@@ -22,9 +22,12 @@
               <span>{{ item.name }}</span>
             </template>
             <template v-for="subItem in item.children" :key="subItem.id">
-              <el-menu-item :index="subItem.id + ''">{{
-                subItem.name
-              }}</el-menu-item>
+              <el-menu-item
+                :index="subItem.id + ''"
+                @click="handleItemClick(subItem)"
+              >
+                {{ subItem.name }}
+              </el-menu-item>
             </template>
           </el-sub-menu>
         </template>
@@ -68,6 +71,7 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -80,6 +84,14 @@ defineProps({
 
 const useLoginStore = useStore()
 const userMenu = computed(() => useLoginStore.state.login.userMenu)
+console.log(userMenu)
+
+const router = useRouter()
+// 监听item 的点击
+function handleItemClick(item) {
+  const url = item.url
+  router.push(url)
+}
 </script>
 
 <style lang="less" scoped>
@@ -96,6 +108,9 @@ const userMenu = computed(() => useLoginStore.state.login.userMenu)
     img {
       height: 30px;
       margin-right: 10px;
+    }
+    .title {
+      white-space: nowrap;
     }
   }
   .menu {
