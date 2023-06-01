@@ -132,6 +132,11 @@ router.beforeEach((to) => {
   if (to.path.startsWith('/main') && !token) {
     return '/login'
   }
+
+  // 第一次进入页面，匹配显示页面
+  if (to.path === '/main') {
+    return '/main/system/user'
+  }
 })
 
 export default router

@@ -6,7 +6,7 @@
     </div>
     <div class="menu">
       <el-menu
-        default-active="3"
+        default-active="2"
         text-color="#b7bdc3"
         active-text-color="#fff"
         background-color="#001529"
@@ -84,7 +84,7 @@ defineProps({
 
 const useLoginStore = useStore()
 const userMenu = computed(() => useLoginStore.state.login.userMenu)
-console.log(userMenu)
+// console.log(userMenu)
 
 const router = useRouter()
 // 监听item 的点击

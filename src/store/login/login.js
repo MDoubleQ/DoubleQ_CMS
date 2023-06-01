@@ -85,9 +85,12 @@ export default {
     },
     // 用户进行刷新后，默认加载数据
     localCacheAction(context) {
-      const token = localCache.getCache('login-token')
-      const userInfo = localCache.getCache('userInfo')
-      const userMenu = localCache.getCache('userMenu')
+      const [token, userInfo, userMenu] = [
+        localCache.getCache('login-token'),
+        localCache.getCache('userInfo'),
+        localCache.getCache('userMenu')
+      ]
+
       const localCacheMessage = {
         token,
         userInfo,
@@ -98,9 +101,9 @@ export default {
         context.commit('setLocalCache', localCacheMessage)
         // 根据userMenu数据进行动态路由配置
         for (const menu of localCacheMessage.userMenu) {
-          console.log(menu)
+          // console.log(menu)
           for (const submenu of menu.children) {
-            console.log(submenu)
+            // console.log(submenu)
             const route = localRouter.find((item) => item.path === submenu.url)
             if (route) {
               router.addRoute('main', route)

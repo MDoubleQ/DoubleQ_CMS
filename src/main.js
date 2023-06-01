@@ -26,7 +26,8 @@ app.use(store)
 app.use(ElementPlus, {
   locale: zhCn
 })
-app.mount('#app')
+
 store.dispatch('login/localCacheAction').then(() => {
-  console.log(store.state.login.userMenu)
+  app.mount('#app')
+  // console.log(store.state.login.userMenu)
 })

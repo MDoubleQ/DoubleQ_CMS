@@ -3,7 +3,9 @@
     <div class="user-content-header">
       <h3>用户列表</h3>
       <div class="new-button">
-        <el-button type="primary">新建数据</el-button>
+        <el-button type="primary" @click="handleNewUserClick"
+          >新建用户</el-button
+        >
       </div>
     </div>
     <div class="user-content-table">
@@ -46,12 +48,19 @@
         <el-table-column align="center" prop="createAt" label="创建时间" />
         <el-table-column align="center" prop="updateAt" label="更新时间" />
         <el-table-column align="center" label="操作" width="180px">
-          <el-button icon="edit" size="small" type="primary" text="primary"
-            >编辑</el-button
-          >
-          <el-button icon="delete" size="small" type="danger" text="danger"
-            >删除</el-button
-          >
+          <template #default="scope">
+            <el-button
+              icon="edit"
+              size="small"
+              type="primary"
+              text
+              @click="handleEditBtnClick(scope.row)"
+              >编辑</el-button
+            >
+            <el-button icon="delete" size="small" type="danger" text
+              >删除</el-button
+            >
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -63,13 +72,25 @@
 import { useStore } from 'vuex'
 import { toRefs } from 'vue'
 const userSystemStore = useStore()
+const emits = defineEmits(['newClick', 'editClick'])
 userSystemStore.dispatch('system/postUsersListAction')
 // const { usersList, usersTotalCount } = computed({
 //   ...mapState('system', ['usersList', 'usersTotalCount'])
 // })
-const { usersList, usersTotalCount } = toRefs(userSystemStore.state.system)
+const { usersList } = toRefs(userSystemStore.state.system)
 
-console.log(usersList, usersTotalCount)
+// console.log(usersList)
+
+// 新建用户的操作
+function handleNewUserClick() {
+  emits('newClick')
+}
+
+// 编辑用户的操作
+function handleEditBtnClick(itemData) {
+  emits('editClick', itemData)
+  console.log('点击了编辑按钮')
+}
 </script>
 
 <style lang="less" scoped>
